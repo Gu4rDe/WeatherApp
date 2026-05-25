@@ -26,8 +26,17 @@ import com.example.weatherapp.presentation.theme.MainCardBackground
 import com.example.weatherapp.presentation.theme.WeatherAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Единственная Activity приложения. Настраивает edge-to-edge отображение,
+ * тему Material 3 и Scaffold с верхней панелью, показывающей название города.
+ */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    /**
+     * Инициализирует UI: тема, Scaffold с топбаром (название города / "WeatherApp"), MainScreen.
+     *
+     * @param savedInstanceState Сохранённое состояние (не используется).
+     */
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

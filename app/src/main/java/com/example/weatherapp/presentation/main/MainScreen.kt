@@ -23,6 +23,13 @@ import com.example.weatherapp.presentation.components.MainCard
 import com.example.weatherapp.presentation.components.WeatherDetailsCard
 import com.example.weatherapp.presentation.theme.MainCardBackground
 
+/**
+ * Главный экран приложения — отображает погоду согласно [MainUiState]:
+ * индикатор загрузки, сообщение об ошибке с кнопкой повтора, или данные погоды.
+ *
+ * @param viewModel ViewModel главного экрана (HiltViewModel).
+ * @param modifier Модификатор для корневого контейнера.
+ */
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,
@@ -66,6 +73,13 @@ fun MainScreen(
     }
 }
 
+/**
+ * Содержимое экрана при успешно загруженной погоде:
+ * главная карточка с температурой + детальные показатели.
+ *
+ * @param weather Загруженные данные о погоде.
+ * @param modifier Модификатор для контейнера.
+ */
 @Composable
 private fun WeatherContent(
     weather: Weather,

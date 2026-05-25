@@ -12,11 +12,19 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
+/**
+ * ViewModel главного экрана — управляет состоянием UI через [StateFlow],
+ * загружает погоду при инициализации и обрабатывает ошибки сети.
+ */
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository
 ) : ViewModel() {
 
+    /**
+     * Поток состояния UI: [MainUiState.Loading], [MainUiState.Error], [MainUiState.Success].
+     * Только для чтения снаружи — запись через внутренний MutableStateFlow.
+     */
     private val _uiState = MutableStateFlow<MainUiState>(MainUiState.Loading)
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
@@ -24,6 +32,13 @@ class MainViewModel @Inject constructor(
         loadWeather()
     }
 
+    /**
+     * Загружает текущую погоду по заданным координатам.
+     * При ошибке сети (таймаут/нет соединения) отображает понятное сообщение.
+     *
+     * @param lat Широта (по умолчанию Москва — 55.75).
+     * @param lon Долгота (по умолчанию Москва — 37.61).
+     */
     fun loadWeather(lat: Double = DEFAULT_LAT, lon: Double = DEFAULT_LON) {
         viewModelScope.launch {
             _uiState.value = MainUiState.Loading
