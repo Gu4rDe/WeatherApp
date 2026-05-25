@@ -1,24 +1,31 @@
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
 # --- IDE (Android Studio) ---
 .idea/
 *.iml
 *.iws
 *.ipr
+.navigation/
 
 # --- Gradle ---
-**/.gradle/
+.gradle/
 **/build/
 !gradle-wrapper.jar
 
-# --- Локальные настройки ---
-/local.properties
+# --- Local settings ---
+local.properties
 
-# --- Секреты и ключи ---
+# --- Secrets & keys ---
 *.jks
 *.keystore
 
-# --- Сгенерированные артефакты ---
+# --- Build artifacts ---
 *.apk
+*.ap_
 *.aab
+*.aar
 *.dex
 *.class
 bin/
@@ -27,17 +34,14 @@ gen/
 # --- Kotlin ---
 .kotlin/
 
-# --- Нативная сборка ---
+# --- NDK ---
 .externalNativeBuild/
 .cxx/
 ndkBuild/
 
-# --- Файлы ОС ---
-.DS_Store
-Thumbs.db
-
-# --- Прочее ---
+# --- Other ---
 *.log
 *.hprof
 captures/
+reports/
 output-metadata.json
