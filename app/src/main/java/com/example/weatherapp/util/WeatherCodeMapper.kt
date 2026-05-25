@@ -2,19 +2,36 @@ package com.example.weatherapp.util
 
 import com.example.weatherapp.domain.model.WeatherType
 
+/**
+ * Маппер строковых значений condition из Yandex Weather API в доменный enum [WeatherType].
+ */
 object WeatherCodeMapper {
 
-    fun mapCodeToWeatherType(code: Int): WeatherType {
-        return when (code) {
-            in 200..232 -> WeatherType.Thunderstorm
-            in 300..321 -> WeatherType.ShowerRain
-            in 500..504 -> WeatherType.Rain
-            511, in 520..531 -> WeatherType.ShowerRain
-            in 600..622 -> WeatherType.Snow
-            in 701..781 -> WeatherType.Mist
-            800 -> WeatherType.ClearSky
-            801 -> WeatherType.FewClouds
-            802 -> WeatherType.ScatteredClouds
+    /**
+     * Маппит строковое значение condition из Yandex Weather API
+     * в доменный enum [WeatherType].
+     *
+     * Соответствие условий Yandex → WeatherType:
+     * - CLEAR → ClearSky
+     * - PARTLY_CLOUDY → FewClouds
+     * - CLOUDY, OVERCAST → ScatteredClouds
+     * - LIGHT_RAIN, SHOWERS, SLEET → ShowerRain
+     * - RAIN, HEAVY_RAIN → Rain
+     * - LIGHT_SNOW, SNOW, SNOWFALL → Snow
+     * - HAIL, THUNDERSTORM, THUNDERSTORM_WITH_RAIN, THUNDERSTORM_WITH_HAIL → Thunderstorm
+     *
+     * @param condition Строковое значение condition из ответа Yandex Weather API (например, "CLEAR", "RAIN").
+     * @return Соответствующий [WeatherType], или [WeatherType.ScatteredClouds] для неизвестных значений.
+     */
+    fun mapConditionToWeatherType(condition: String): WeatherType {
+        return when (condition) {
+            "CLEAR" -> WeatherType.ClearSky
+            "PARTLY_CLOUDY" -> WeatherType.FewClouds
+            "CLOUDY", "OVERCAST" -> WeatherType.ScatteredClouds
+            "LIGHT_RAIN", "SHOWERS", "SLEET" -> WeatherType.ShowerRain
+            "RAIN", "HEAVY_RAIN" -> WeatherType.Rain
+            "LIGHT_SNOW", "SNOW", "SNOWFALL" -> WeatherType.Snow
+            "HAIL", "THUNDERSTORM", "THUNDERSTORM_WITH_RAIN", "THUNDERSTORM_WITH_HAIL" -> WeatherType.Thunderstorm
             else -> WeatherType.ScatteredClouds
         }
     }

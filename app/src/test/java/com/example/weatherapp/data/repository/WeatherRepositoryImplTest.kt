@@ -1,12 +1,18 @@
 package com.example.weatherapp.data.repository
 
+import android.content.Context
 import com.example.weatherapp.data.remote.api.WeatherApiService
-import com.example.weatherapp.data.remote.dto.MainInfoDto
-import com.example.weatherapp.data.remote.dto.OpenWeatherResponseDto
-import com.example.weatherapp.data.remote.dto.WeatherConditionDto
-import com.example.weatherapp.data.remote.dto.WindInfoDto
+import com.example.weatherapp.data.remote.dto.DaypartDto
+import com.example.weatherapp.data.remote.dto.DaypartsDto
+import com.example.weatherapp.data.remote.dto.ForecastDayDto
+import com.example.weatherapp.data.remote.dto.ForecastDto
+import com.example.weatherapp.data.remote.dto.NowDto
+import com.example.weatherapp.data.remote.dto.WeatherByPointDto
+import com.example.weatherapp.data.remote.dto.WeatherByPointWrapper
+import com.example.weatherapp.data.remote.dto.YandexWeatherResponseDto
 import com.example.weatherapp.domain.model.WeatherType
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -16,34 +22,46 @@ import org.junit.Test
 class WeatherRepositoryImplTest {
 
     private val apiService: WeatherApiService = mockk()
-    private val repository = WeatherRepositoryImpl(apiService)
+    private val context: Context = mockk()
+    private val repository = WeatherRepositoryImpl(apiService, context)
 
-    private val testDto = OpenWeatherResponseDto(
-        main = MainInfoDto(
-            temp = 25.5,
-            tempMax = 28.0,
-            tempMin = 20.0,
-            pressure = 1013.0,
-            humidity = 65.0
-        ),
-        wind = WindInfoDto(speed = 5.2),
-        visibility = 10000.0,
-        weatherConditions = listOf(
-            WeatherConditionDto(id = 800, main = "Clear", description = "clear sky", icon = "01d")
-        ),
-        cityName = "Moscow"
+    private val testDto = YandexWeatherResponseDto(
+        data = WeatherByPointWrapper(
+            weatherByPoint = WeatherByPointDto(
+                now = NowDto(
+                    temperature = 25,
+                    humidity = 65,
+                    pressure = 1013,
+                    windSpeed = 5.2f,
+                    visibility = 10000,
+                    condition = "CLEAR",
+                    cloudiness = "CLEAR",
+                    icon = "skc_d"
+                ),
+                forecast = ForecastDto(
+                    days = listOf(
+                        ForecastDayDto(
+                            parts = DaypartsDto(
+                                night = DaypartDto(minTemperature = 20, maxTemperature = 22),
+                                day = DaypartDto(minTemperature = 24, maxTemperature = 28)
+                            )
+                        )
+                    )
+                )
+            )
+        )
     )
 
     @Test
     fun getCurrentWeather_success_returnsWeatherWithCorrectFields() = runTest {
         coEvery { apiService.getCurrentWeather(55.75, 37.61) } returns testDto
+        every { context.getSystemService(any()) } returns mockk<android.location.Geocoder>(relaxed = true)
 
         val result = repository.getCurrentWeather(55.75, 37.61)
 
         assertTrue(result.isSuccess)
         val weather = result.getOrThrow()
-        assertEquals("Moscow", weather.cityName)
-        assertEquals(25.5, weather.temperature, 0.01)
+        assertEquals(25.0, weather.temperature, 0.01)
         assertEquals(28.0, weather.maxTemperature, 0.01)
         assertEquals(20.0, weather.minTemperature, 0.01)
         assertEquals(65.0, weather.humidity, 0.01)
@@ -54,29 +72,22 @@ class WeatherRepositoryImplTest {
     }
 
     @Test
-    fun getCurrentWeather_thunderstormCode_mapsCorrectly() = runTest {
-        val dto = testDto.copy(
-            weatherConditions = listOf(
-                WeatherConditionDto(id = 200, main = "Thunderstorm", description = "thunderstorm", icon = "11d")
+    fun getCurrentWeather_thunderstormCondition_mapsCorrectly() = runTest {
+        val dto = YandexWeatherResponseDto(
+            data = WeatherByPointWrapper(
+                weatherByPoint = WeatherByPointDto(
+                    now = testDto.data!!.weatherByPoint.now.copy(condition = "THUNDERSTORM"),
+                    forecast = testDto.data!!.weatherByPoint.forecast
+                )
             )
         )
         coEvery { apiService.getCurrentWeather(any(), any()) } returns dto
+        every { context.getSystemService(any()) } returns mockk<android.location.Geocoder>(relaxed = true)
 
         val result = repository.getCurrentWeather(0.0, 0.0)
 
         assertTrue(result.isSuccess)
         assertEquals(WeatherType.Thunderstorm, result.getOrThrow().weatherType)
-    }
-
-    @Test
-    fun getCurrentWeather_emptyWeatherConditions_defaultsToScatteredClouds() = runTest {
-        val dto = testDto.copy(weatherConditions = emptyList())
-        coEvery { apiService.getCurrentWeather(any(), any()) } returns dto
-
-        val result = repository.getCurrentWeather(0.0, 0.0)
-
-        assertTrue(result.isSuccess)
-        assertEquals(WeatherType.ScatteredClouds, result.getOrThrow().weatherType)
     }
 
     @Test
