@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+
+    <string name="max_temp">Max: %d ℃</string>
+    <string name="min_temp">Min: %d ℃</string>
+
+    <string name="detail_wind">Ветер</string>
+    <string name="detail_humidity">Влажность</string>
+    <string name="detail_visibility">Видимость</string>
+    <string name="detail_pressure">Давление</string>
+
+    <string name="wind_value">%1$.1f м/с</string>
+    <string name="humidity_value">%1$.0f %%</string>
+    <string name="visibility_value">%1$.0f км</string>
+    <string name="pressure_value">%d мм рт. ст.</string>
+
+    <string name="weather_clear_sky">Ясно</string>
+    <string name="weather_few_clouds">Малооблачно</string>
+    <string name="weather_scattered_clouds">Облачно</string>
+    <string name="weather_broken_clouds">Пасмурно</string>
+    <string name="weather_shower_rain">Ливень</string>
+    <string name="weather_rain">Дождь</string>
+    <string name="weather_thunderstorm">Гроза</string>
+    <string name="weather_snow">Снег</string>
+    <string name="weather_mist">Туман</string>
+
+    <string name="retry">Повторить</string>
+    <string name="error_loading">Ошибка загрузки</string>
+</resources>
