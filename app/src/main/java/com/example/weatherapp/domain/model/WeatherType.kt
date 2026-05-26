@@ -22,9 +22,7 @@ enum class WeatherType(val descriptionResId: Int, @param:DrawableRes val iconRes
     /** Дождь / сильный дождь. */
     Rain(R.string.weather_rain, R.drawable.rain_svgrepo_com__1_),
     /** Гроза (включая град и грозу с дождём). */
-    Thunderstorm(R.string.weather_thunderstorm, R.drawable.storm_svgrepo_com),
+     Thunderstorm(R.string.weather_thunderstorm, R.drawable.storm_svgrepo_com),
     /** Снег (включая снегопад). */
     Snow(R.string.weather_snow, R.drawable.snow_cloud_svgrepo_com),
-    /** Туман / дымка. */
-    Mist(R.string.weather_mist, R.drawable.fog_svgrepo_com)
 }
