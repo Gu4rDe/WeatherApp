@@ -8,8 +8,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.weatherapp.R
 
+/** Кастомный пиксельный шрифт Minecraft для заголовков и текста. */
 val MinecraftFont = FontFamily(Font(R.font.minecraft))
 
+/**
+ * Типографика приложения на основе шрифта Minecraft.
+ * Все уровни (displayLarge..labelLarge) используют MinecraftFont.
+ */
 val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = MinecraftFont,

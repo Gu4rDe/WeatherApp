@@ -7,62 +7,52 @@ import org.junit.Test
 class WeatherCodeMapperTest {
 
     @Test
-    fun thunderstormCodes_mapCorrectly() {
-        assertEquals(WeatherType.Thunderstorm, WeatherCodeMapper.mapCodeToWeatherType(200))
-        assertEquals(WeatherType.Thunderstorm, WeatherCodeMapper.mapCodeToWeatherType(210))
-        assertEquals(WeatherType.Thunderstorm, WeatherCodeMapper.mapCodeToWeatherType(232))
+    fun clearCondition_mapsToClearSky() {
+        assertEquals(WeatherType.ClearSky, WeatherCodeMapper.mapConditionToWeatherType("CLEAR"))
     }
 
     @Test
-    fun drizzleCodes_mapToShowerRain() {
-        assertEquals(WeatherType.ShowerRain, WeatherCodeMapper.mapCodeToWeatherType(300))
-        assertEquals(WeatherType.ShowerRain, WeatherCodeMapper.mapCodeToWeatherType(310))
-        assertEquals(WeatherType.ShowerRain, WeatherCodeMapper.mapCodeToWeatherType(321))
+    fun partlyCloudy_mapsToFewClouds() {
+        assertEquals(WeatherType.FewClouds, WeatherCodeMapper.mapConditionToWeatherType("PARTLY_CLOUDY"))
     }
 
     @Test
-    fun rainCodes_mapCorrectly() {
-        assertEquals(WeatherType.Rain, WeatherCodeMapper.mapCodeToWeatherType(500))
-        assertEquals(WeatherType.Rain, WeatherCodeMapper.mapCodeToWeatherType(502))
-        assertEquals(WeatherType.Rain, WeatherCodeMapper.mapCodeToWeatherType(504))
+    fun cloudyAndOvercast_mapToScatteredClouds() {
+        assertEquals(WeatherType.ScatteredClouds, WeatherCodeMapper.mapConditionToWeatherType("CLOUDY"))
+        assertEquals(WeatherType.ScatteredClouds, WeatherCodeMapper.mapConditionToWeatherType("OVERCAST"))
     }
 
     @Test
-    fun freezingRainAndShowerRain_mapToShowerRain() {
-        assertEquals(WeatherType.ShowerRain, WeatherCodeMapper.mapCodeToWeatherType(511))
-        assertEquals(WeatherType.ShowerRain, WeatherCodeMapper.mapCodeToWeatherType(520))
-        assertEquals(WeatherType.ShowerRain, WeatherCodeMapper.mapCodeToWeatherType(531))
+    fun lightRainShowersSleet_mapToShowerRain() {
+        assertEquals(WeatherType.ShowerRain, WeatherCodeMapper.mapConditionToWeatherType("LIGHT_RAIN"))
+        assertEquals(WeatherType.ShowerRain, WeatherCodeMapper.mapConditionToWeatherType("SHOWERS"))
+        assertEquals(WeatherType.ShowerRain, WeatherCodeMapper.mapConditionToWeatherType("SLEET"))
     }
 
     @Test
-    fun snowCodes_mapToSnow() {
-        assertEquals(WeatherType.Snow, WeatherCodeMapper.mapCodeToWeatherType(600))
-        assertEquals(WeatherType.Snow, WeatherCodeMapper.mapCodeToWeatherType(610))
-        assertEquals(WeatherType.Snow, WeatherCodeMapper.mapCodeToWeatherType(622))
+    fun rainHeavyRain_mapToRain() {
+        assertEquals(WeatherType.Rain, WeatherCodeMapper.mapConditionToWeatherType("RAIN"))
+        assertEquals(WeatherType.Rain, WeatherCodeMapper.mapConditionToWeatherType("HEAVY_RAIN"))
     }
 
     @Test
-    fun mistCodes_mapToMist() {
-        assertEquals(WeatherType.Mist, WeatherCodeMapper.mapCodeToWeatherType(701))
-        assertEquals(WeatherType.Mist, WeatherCodeMapper.mapCodeToWeatherType(750))
-        assertEquals(WeatherType.Mist, WeatherCodeMapper.mapCodeToWeatherType(781))
+    fun snowConditions_mapToSnow() {
+        assertEquals(WeatherType.Snow, WeatherCodeMapper.mapConditionToWeatherType("LIGHT_SNOW"))
+        assertEquals(WeatherType.Snow, WeatherCodeMapper.mapConditionToWeatherType("SNOW"))
+        assertEquals(WeatherType.Snow, WeatherCodeMapper.mapConditionToWeatherType("SNOWFALL"))
     }
 
     @Test
-    fun clearSky_mapCorrectly() {
-        assertEquals(WeatherType.ClearSky, WeatherCodeMapper.mapCodeToWeatherType(800))
+    fun thunderstormConditions_mapToThunderstorm() {
+        assertEquals(WeatherType.Thunderstorm, WeatherCodeMapper.mapConditionToWeatherType("HAIL"))
+        assertEquals(WeatherType.Thunderstorm, WeatherCodeMapper.mapConditionToWeatherType("THUNDERSTORM"))
+        assertEquals(WeatherType.Thunderstorm, WeatherCodeMapper.mapConditionToWeatherType("THUNDERSTORM_WITH_RAIN"))
+        assertEquals(WeatherType.Thunderstorm, WeatherCodeMapper.mapConditionToWeatherType("THUNDERSTORM_WITH_HAIL"))
     }
 
     @Test
-    fun cloudCodes_mapCorrectly() {
-        assertEquals(WeatherType.FewClouds, WeatherCodeMapper.mapCodeToWeatherType(801))
-        assertEquals(WeatherType.ScatteredClouds, WeatherCodeMapper.mapCodeToWeatherType(802))
-        }
-
-    @Test
-    fun unknownCode_defaultsToScatteredClouds() {
-        assertEquals(WeatherType.ScatteredClouds, WeatherCodeMapper.mapCodeToWeatherType(999))
-        assertEquals(WeatherType.ScatteredClouds, WeatherCodeMapper.mapCodeToWeatherType(-1))
-        assertEquals(WeatherType.ScatteredClouds, WeatherCodeMapper.mapCodeToWeatherType(0))
+    fun unknownCondition_defaultsToScatteredClouds() {
+        assertEquals(WeatherType.ScatteredClouds, WeatherCodeMapper.mapConditionToWeatherType("UNKNOWN"))
+        assertEquals(WeatherType.ScatteredClouds, WeatherCodeMapper.mapConditionToWeatherType(""))
     }
 }

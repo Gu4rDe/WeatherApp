@@ -9,6 +9,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import com.example.weatherapp.domain.model.WeatherType
 
+/**
+ * Отображает иконку погодного условия из локальных ассетов
+ * (не из URL иконки API).
+ *
+ * @param weatherType Тип погодных условий, определяющий иконку и contentDescription.
+ * @param size Размер иконки в dp.
+ * @param modifier Модификатор для Image.
+ */
 @Composable
 fun WeatherStatusImage(
     weatherType: WeatherType,

@@ -29,11 +29,23 @@ import com.example.weatherapp.R
 import com.example.weatherapp.domain.model.Weather
 import com.example.weatherapp.presentation.theme.MainCardBackground
 
+/**
+ * Модель для элемента сетки детальной информации.
+ *
+ * @property type Тип показателя (ветер, влажность и т.д.).
+ * @property weather Данные о погоде для извлечения значения.
+ */
 private data class DetailItem(
     val type: DetailType,
     val weather: Weather
 )
 
+/**
+ * Типы детальных показателей погоды с привязкой к иконке и строковому ресурсу.
+ *
+ * @property labelResId Строковый ресурс названия показателя.
+ * @property iconResId Drawable-ресурс иконки показателя.
+ */
 private enum class DetailType(
     val labelResId: Int,
     val iconResId: Int
@@ -44,6 +56,13 @@ private enum class DetailType(
     Pressure(R.string.detail_pressure, R.drawable.pressure_svgrepo_com)
 }
 
+/**
+ * Карточка детальной информации о погоде: сетка 2×2 с показателями
+ * ветра, влажности, видимости и давления.
+ *
+ * @param weather Загруженные данные о погоде.
+ * @param modifier Модификатор для LazyVerticalGrid.
+ */
 @Composable
 fun WeatherDetailsCard(
     weather: Weather,
@@ -63,6 +82,13 @@ fun WeatherDetailsCard(
     }
 }
 
+/**
+ * Отдельная ячейка детальной информации: иконка, название и значение показателя.
+ *
+ * @param type Тип показателя для извлечения данных.
+ * @param weather Данные о погоде.
+ * @param modifier Модификатор для корневой колонки.
+ */
 @Composable
 private fun DetailCard(
     type: DetailType,
@@ -126,15 +152,12 @@ private fun DetailCard(
                 maxLines = 1
             )
 
-            DetailType.Pressure -> {
-                val mmHg = (weather.pressure * 0.750064).toInt()
-                Text(
-                    text = stringResource(R.string.pressure_value, mmHg),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = Color.White,
-                    maxLines = 1
-                )
-            }
+            DetailType.Pressure -> Text(
+                text = stringResource(R.string.pressure_value, weather.pressure.toInt()),
+                style = MaterialTheme.typography.labelLarge,
+                color = Color.White,
+                maxLines = 1
+            )
         }
     }
 }

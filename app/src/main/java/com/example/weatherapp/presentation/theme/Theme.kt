@@ -10,18 +10,32 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
+/**
+ * Тёмная цветовая схема Material 3.
+ */
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80
 )
 
+/**
+ * Светлая цветовая схема Material 3.
+ */
 private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
     tertiary = Pink40
 )
 
+/**
+ * Тема приложения. Поддерживает динамические цвета Material You (Android 12+)
+ * и переключение тёмной/светлой темы.
+ *
+ * @param darkTheme Использовать тёмную тему (по умолчанию — системная настройка).
+ * @param dynamicColor Использовать динамические цвета (по умолчанию true).
+ * @param content Содержимое, обёрнутое в тему.
+ */
 @Composable
 fun WeatherAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

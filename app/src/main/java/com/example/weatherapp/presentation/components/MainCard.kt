@@ -19,6 +19,13 @@ import com.example.weatherapp.R
 import com.example.weatherapp.domain.model.Weather
 import com.example.weatherapp.presentation.theme.MainCardBackground
 
+/**
+ * Главная карточка с иконкой погоды, текущей температурой,
+ * текстовым описанием условий и мин/макс температурой.
+ *
+ * @param weather Загруженные данные о погоде.
+ * @param modifier Модификатор для корневой колонки.
+ */
 @Composable
 fun MainCard(
     weather: Weather,
